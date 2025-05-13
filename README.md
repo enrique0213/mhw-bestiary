@@ -1,6 +1,4 @@
-# mhw-bestiary
 <h1>Title</h1>
-<br>
 <h2>Monster Hunter World Bestiary</h2>
 
 <br> 
