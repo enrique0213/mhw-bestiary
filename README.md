@@ -31,7 +31,18 @@ git clone git@github.com:enrique0213/mhw-bestiary.git
 <ul>
   <li>Purpose: Adds a monster to the user's favorites</li>
   <li>{
-  "monster_id": 1,
+  "monster_id": 1, <br>
   "user_id": "abc123"
-}</li>
+}
+  </li>
+  <li>Returns: Favorited Object</li>
+</ul>
+
+<h1>Known Bugs</h1>
+<ul>
+  <li>Some monsters might not have the full description</li>
+</ul>
+<h1>Roadmap / Future Updates</h1>
+<ul>
+  <li>Include armor pieces and weapons</li>
 </ul>
