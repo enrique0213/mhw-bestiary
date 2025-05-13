@@ -14,3 +14,5 @@
 <nl>
 
 <h1>Developer Module:</h1>
+In any directory 
+git clone git@github.com:enrique0213/mhw-bestiary.git
