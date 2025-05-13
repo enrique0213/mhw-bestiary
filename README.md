@@ -1,5 +1,5 @@
-<h1>Title</h1>
-<h2>Monster Hunter World Bestiary</h2>
+<h1>Title: </h1><h2>Monster Hunter World Bestiary</h2>
+
 
 <br> 
 <h1>Description</h1>
