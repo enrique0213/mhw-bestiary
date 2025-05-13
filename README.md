@@ -17,3 +17,12 @@
 In any directory 
 <br>
 git clone git@github.com:enrique0213/mhw-bestiary.git
+
+<p>install https://marketplace.visualstudio.com/items/?itemName=ritwickdey.LiveServer in VS code and run live server to your desktop</p>
+<p>No tests are currently being ran</p>
+<h2>API Endpoints</h2>
+<p>GET /api/monster </p>
+<ul>
+  <li>Purpose: Retrieves all monsters from the database</li>
+  <li>Returns: JSON array of monster objects</li>
+<p>POST /api/favorites</p>
