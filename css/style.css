@@ -1,0 +1,56 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #1d1d1d;
+  color: #f0f0f0;
+}
+
+header {
+  background: #272727;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav a {
+  color: #89cff0;
+  margin: 0 1rem;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+main {
+  padding: 2rem;
+}
+
+.monster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.monster-card {
+  background: #2e2e2e;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+#monster-search {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px;
+  margin: 1rem 0;
+  font-size: 16px;
+  border-radius: 4px;
+  border: none;
+}
+
+#monster-chart {
+  margin: 2rem 0;
+  max-width: 100%;
+}
