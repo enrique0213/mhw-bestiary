@@ -27,15 +27,10 @@ git clone git@github.com:enrique0213/mhw-bestiary.git
   <li>Purpose: Retrieves all monsters from the database</li>
   <li>Returns: JSON array of monster objects</li>
 </ul>
-<p>POST /api/favorites</p>
+<p>POST /api/addMonsters</p>
 <ul>
-  <li>Purpose: Adds a monster to the user's favorites</li>
-  <li>{
-  "monster_id": 1, <br>
-  "user_id": "abc123"
-}
-  </li>
-  <li>Returns: Favorited Object</li>
+  <li>Purpose: Adds a monster to the database</li>
+  <li>Returns: New monsters on a card and shows at the bottom of the list</li>
 </ul>
 
 <h1>Known Bugs</h1>
