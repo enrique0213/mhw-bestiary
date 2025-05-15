@@ -29,6 +29,22 @@
       <canvas id="monster-chart" width="400" height="200"></canvas>
 
       <div id="monster-list" class="monster-grid"></div>
+
+      <h2>Add a New Monster</h2>
+      <form id="add-monster-form">
+        <label>Name: <input type="text" name="name" required /></label><br />
+        <label>Type: <input type="text" name="type" required /></label><br />
+        <label
+          >Description:<br /><textarea
+            name="description"
+            required
+          ></textarea></label
+        ><br />
+        <button type="submit">Add Monster</button>
+      </form>
+
+      <div id="form-message"></div>
     </main>
+    <script src="js/addMonster.js"></script>
   </body>
 </html>

@@ -2,7 +2,12 @@
   <head>
     <title>MHW Bestiary - Home</title>
     <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+    />
     <script src="js/home.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   </head>
   <body>
     <header>
@@ -20,6 +25,34 @@
       <div id="motd" class="motd-card">
         <h2>Monster of the Day</h2>
         <div id="motd-card">Loading...</div>
+      </div>
+      <div id="quote-container">
+        <h2>Character Quote</h2>
+        <p id="quote-box"></p>
+      </div>
+
+      <h2>Featured Monsters</h2>
+      <div class="swiper">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <img src="images/monster1.jpg" alt="Monster 1" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/monster2.jpg" alt="Monster 2" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/monster3.jpg" alt="Monster 3" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/monster4.jpg" alt="Monster 1" />
+          </div>
+          <div class="swiper-slide">
+            <img src="images/monster5.jpg" alt="Monster 2" />
+          </div>
+        </div>
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
       </div>
     </main>
   </body>

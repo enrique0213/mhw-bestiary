@@ -10,14 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderMonsters(monsters) {
     monsterList.innerHTML = "";
 
-    if (monsters.length === 0) {
+    if (!monsters.length) {
       monsterList.innerHTML = "<p>No monsters found.</p>";
       return;
     }
 
     monsters.forEach((monster) => {
       const weaknessesHtml =
-        monster.weaknesses && monster.weaknesses.length > 0
+        Array.isArray(monster.weaknesses) && monster.weaknesses.length > 0
           ? `<ul class="weakness-list">
               ${monster.weaknesses
                 .map(
@@ -25,8 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <li>
                   <strong>${w.element.charAt(0).toUpperCase() + w.element.slice(1)}</strong>: ${w.stars} star${w.stars > 1 ? "s" : ""}
                   ${w.condition ? ` (${w.condition})` : ""}
-                </li>
-              `
+                </li>`
                 )
                 .join("")}
             </ul>`
@@ -54,20 +53,21 @@ document.addEventListener("DOMContentLoaded", () => {
       if (selectedWeakness === "all") return matchesSearch;
 
       const hasWeakness =
-        monster.weaknesses &&
+        Array.isArray(monster.weaknesses) &&
         monster.weaknesses.some((w) => w.element === selectedWeakness);
 
       return matchesSearch && hasWeakness;
     });
 
     renderMonsters(filtered);
+    generateChart(filtered);
   }
 
   function generateChart(monsters) {
     const locationCounts = {};
 
     monsters.forEach((monster) => {
-      if (Array.isArray(monster.locations)) {
+      if (Array.isArray(monster.locations) && monster.locations.length > 0) {
         monster.locations.forEach((loc) => {
           const name = loc.name || "Unknown";
           locationCounts[name] = (locationCounts[name] || 0) + 1;
@@ -87,11 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
     monsterChart = new Chart(ctx, {
       type: "bar",
       data: {
-        labels: labels,
+        labels,
         datasets: [
           {
             label: "Number of Monsters by Location",
-            data: data,
+            data,
             backgroundColor: "rgba(255, 159, 64, 0.6)",
             borderColor: "rgba(255, 159, 64, 1)",
             borderWidth: 1,
@@ -118,9 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  fetch('/api/monsters')
+  // Initial fetch
+  fetch("/api/monsters")
     .then((res) => res.json())
     .then((monsters) => {
+      console.log('Monsters from API:', monsters);
       allMonsters = monsters;
       renderMonsters(allMonsters);
       generateChart(allMonsters);
@@ -129,14 +131,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const weaknessSet = new Set();
 
       monsters.forEach((monster) => {
-        if (monster.weaknesses && monster.weaknesses.length > 0) {
-          monster.weaknesses.forEach((w) => {
-            weaknessSet.add(w.element);
-          });
+        if (Array.isArray(monster.weaknesses)) {
+          monster.weaknesses.forEach((w) => weaknessSet.add(w.element));
         }
       });
 
-      // Clear existing options and add "all"
       typeFilter.innerHTML = `<option value="all">All Weaknesses</option>`;
 
       weaknessSet.forEach((element) => {
