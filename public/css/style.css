@@ -29,7 +29,7 @@ main {
 
 .monster-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 1rem;
 }
 
@@ -53,4 +53,25 @@ main {
 #monster-chart {
   margin: 2rem 0;
   max-width: 100%;
+}
+
+.motd-card {
+  text-align:center;
+  background: #ca2e2e;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+/* New styles */
+
+.monster-card:hover {
+  transform: scale(1.1);
+  border-color: #ff9f40;
+  box-shadow: 0 0 15px #ff9f40;
+  z-index: 10;
+  background: #2e2e2e;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
 }

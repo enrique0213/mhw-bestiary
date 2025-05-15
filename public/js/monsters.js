@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
   const monsterList = document.getElementById("monster-list");
   const searchInput = document.getElementById("monster-search");
+  const typeFilter = document.getElementById("type-filter");
   const chartCanvas = document.getElementById("monster-chart");
 
   let allMonsters = [];
   let monsterChart = null;
 
-  // Render visible monster cards
   function renderMonsters(monsters) {
     monsterList.innerHTML = "";
 
@@ -16,112 +16,141 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     monsters.forEach((monster) => {
+      const weaknessesHtml =
+        monster.weaknesses && monster.weaknesses.length > 0
+          ? `<ul class="weakness-list">
+              ${monster.weaknesses
+                .map(
+                  (w) => `
+                <li>
+                  <strong>${w.element.charAt(0).toUpperCase() + w.element.slice(1)}</strong>: ${w.stars} star${w.stars > 1 ? "s" : ""}
+                  ${w.condition ? ` (${w.condition})` : ""}
+                </li>
+              `
+                )
+                .join("")}
+            </ul>`
+          : "<p>No weaknesses listed.</p>";
+
       const card = document.createElement("div");
       card.className = "monster-card";
       card.innerHTML = `
         <h3>${monster.name}</h3>
         <p><strong>Type:</strong> ${monster.type}</p>
         <p><strong>Description:</strong> ${monster.description || "N/A"}</p>
+        <div class="weakness-container"><strong>Weaknesses:</strong> ${weaknessesHtml}</div>
       `;
+
       monsterList.appendChild(card);
     });
   }
 
-  // Filter the list based on search input
-  function handleSearch(event) {
-    const query = event.target.value.toLowerCase();
-    const filtered = allMonsters.filter((m) =>
-      m.name.toLowerCase().includes(query)
-    );
+  function filterMonsters() {
+    const searchQuery = searchInput.value.toLowerCase();
+    const selectedWeakness = typeFilter.value;
+
+    const filtered = allMonsters.filter((monster) => {
+      const matchesSearch = monster.name.toLowerCase().includes(searchQuery);
+      if (selectedWeakness === "all") return matchesSearch;
+
+      const hasWeakness =
+        monster.weaknesses &&
+        monster.weaknesses.some((w) => w.element === selectedWeakness);
+
+      return matchesSearch && hasWeakness;
+    });
+
     renderMonsters(filtered);
   }
 
-  // Generate Chart.js bar chart based on monster types
   function generateChart(monsters) {
-  const locationCounts = {};
+    const locationCounts = {};
 
-  monsters.forEach((monster) => {
-    if (Array.isArray(monster.locations)) {
-      monster.locations.forEach((loc) => {
-        const name = loc.name || "Unknown";
-        locationCounts[name] = (locationCounts[name] || 0) + 1;
-      });
+    monsters.forEach((monster) => {
+      if (Array.isArray(monster.locations)) {
+        monster.locations.forEach((loc) => {
+          const name = loc.name || "Unknown";
+          locationCounts[name] = (locationCounts[name] || 0) + 1;
+        });
+      }
+    });
+
+    const labels = Object.keys(locationCounts);
+    const data = Object.values(locationCounts);
+
+    const ctx = chartCanvas.getContext("2d");
+
+    if (monsterChart) {
+      monsterChart.destroy();
     }
-  });
 
-  const labels = Object.keys(locationCounts);
-  const data = Object.values(locationCounts);
-
-  const ctx = chartCanvas.getContext("2d");
-
-  if (monsterChart) {
-    monsterChart.destroy();
-  }
-
-  monsterChart = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: "Number of Monsters by Location",
-          data: data,
-          backgroundColor: "rgba(255, 159, 64, 0.6)",
-          borderColor: "rgba(255, 159, 64, 1)",
-          borderWidth: 1,
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: {
-          display: false,
-        },
-        tooltip: {
-          callbacks: {
-            label: function (context) {
-              return `${context.parsed.y} monster(s)`;
+    monsterChart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: "Number of Monsters by Location",
+            data: data,
+            backgroundColor: "rgba(255, 159, 64, 0.6)",
+            borderColor: "rgba(255, 159, 64, 1)",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context) => `${context.parsed.y} monster(s)`,
             },
           },
         },
-      },
-      scales: {
-        y: {
-          beginAtZero: true,
-          ticks: {
-            stepSize: 1,
-          },
-        },
-        x: {
-          ticks: {
-            autoSkip: false,
-            maxRotation: 45,
-            minRotation: 45,
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1 } },
+          x: {
+            ticks: { autoSkip: false, maxRotation: 45, minRotation: 45 },
           },
         },
       },
-    },
-  });
-}
+    });
+  }
 
+  fetch("https://mhw-db.com/monsters")
+    .then((res) => res.json())
+    .then((monsters) => {
+      allMonsters = monsters;
+      renderMonsters(allMonsters);
+      generateChart(allMonsters);
 
-  // Fetch monsters from the API and initialize page
-  if (monsterList) {
-    fetch("https://mhw-db.com/monsters")
-      .then((res) => res.json())
-      .then((monsters) => {
-        allMonsters = monsters;
-        renderMonsters(allMonsters);
-        generateChart(allMonsters);
-      })
-      .catch((err) => {
-        console.error("Error fetching monsters:", err);
-        monsterList.innerHTML = "<p>Failed to load monsters.</p>";
+      // Build weakness filter dropdown
+      const weaknessSet = new Set();
+
+      monsters.forEach((monster) => {
+        if (monster.weaknesses && monster.weaknesses.length > 0) {
+          monster.weaknesses.forEach((w) => {
+            weaknessSet.add(w.element);
+          });
+        }
       });
 
-    if (searchInput) {
-      searchInput.addEventListener("input", handleSearch);
-    }
-  }
+      // Clear existing options and add "all"
+      typeFilter.innerHTML = `<option value="all">All Weaknesses</option>`;
+
+      weaknessSet.forEach((element) => {
+        const option = document.createElement("option");
+        option.value = element;
+        option.textContent = element.charAt(0).toUpperCase() + element.slice(1);
+        typeFilter.appendChild(option);
+      });
+    })
+    .catch((err) => {
+      console.error("Error fetching monsters:", err);
+      monsterList.innerHTML = "<p>Failed to load monsters.</p>";
+    });
+
+  if (searchInput) searchInput.addEventListener("input", filterMonsters);
+  if (typeFilter) typeFilter.addEventListener("change", filterMonsters);
 });
