@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  fetch("https://mhw-db.com/monsters")
+  fetch('/api/monsters')
     .then((res) => res.json())
     .then((monsters) => {
       allMonsters = monsters;

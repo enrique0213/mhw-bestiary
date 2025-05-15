@@ -1,4 +1,4 @@
-fetch("https://mhw-db.com/monsters")
+fetch('/api/monsters')
   .then(res => res.json())
   .then(monsters => {
     const randomIndex = Math.floor(Math.random() * monsters.length);

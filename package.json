@@ -1,6 +1,32 @@
 {
+  "name": "mhw-bestiary",
+  "version": "1.0.0",
+  "description": "Monster Hunter World Bestiary",
+  "homepage": "https://github.com/enrique0213/mhw-bestiary#readme",
+  "bugs": {
+    "url": "https://github.com/enrique0213/mhw-bestiary/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enrique0213/mhw-bestiary.git"
+  },
+  "license": "ISC",
+  "author": "Enrique Lazaro",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.49.4",
-    "dotenv": "^16.5.0"
+    "body-parser": "^2.2.0",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
