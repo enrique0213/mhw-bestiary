@@ -10,6 +10,8 @@
 <h1>Target Browsers</h1>
 <p>Desktop Browsers like Chrome, Firefox, Safari and Edge</p>
 
+<h1>https://mhw-bestiary.vercel.app/</h1>
+<p>This is the link to the deployed app.</p>
 
 <nl>
 
